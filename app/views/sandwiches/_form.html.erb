@@ -1,4 +1,12 @@
 <%= form_with(model: sandwich, class: "flex flex-col gap-1 items-start") do |form|%>
+  <% if sandwich.errors.any? %>
+    <ul>
+      <% sandwich.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
   <%= form.label :name, "Name:", for: "name" %>
   <%= form.text_field :name, id: "name", class:"border" %>
 
