@@ -54,7 +54,7 @@ group :development, :test do
 
   gem "standard", ">= 1.35.1"
 
-  gem 'dotenv-rails'
+  gem "dotenv-rails"
 end
 
 group :development do
