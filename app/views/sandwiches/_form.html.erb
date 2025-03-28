@@ -1,0 +1,17 @@
+<%= form_with(model: sandwich, class: "flex flex-col gap-1 items-start") do |form|%>
+  <% if sandwich.errors.any? %>
+    <ul>
+      <% sandwich.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= form.label :name, "Name:", for: "name" %>
+  <%= form.text_field :name, id: "name", class:"border" %>
+
+  <%= form.label :price, "Price", for: "price" %>
+  <%= form.number_field :price, id: "price", placeholder: "0",class:"border" %>
+
+  <%= form.submit "Create", class: "cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"%>
+<% end %>
