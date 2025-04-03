@@ -53,6 +53,8 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   gem "standard", ">= 1.35.1"
+
+  gem "dotenv-rails"
 end
 
 group :development do
