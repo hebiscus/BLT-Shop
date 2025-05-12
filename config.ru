@@ -3,6 +3,11 @@
 require_relative "config/environment"
 require_relative "FAX-API/app"
 
-run Rails.application
-Rails.application.load_server
-run FaxApp.new
+map "/" do
+  run Rails.application
+  Rails.application.load_server
+end
+
+map "/fax-api" do
+  run FaxApp.new
+end
