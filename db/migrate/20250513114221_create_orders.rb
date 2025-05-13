@@ -1,7 +1,7 @@
 class CreateOrders < ActiveRecord::Migration[8.0]
   def up
     execute <<-SQL
-      CREATE TYPE delivery_method AS ENUM ("self_pickup", "delivery");
+      CREATE TYPE delivery_method AS ENUM ('self_pickup', 'delivery');
     SQL
 
     create_table :orders do |t|
