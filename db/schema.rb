@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_26_113248) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_26_120501) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "delivery_method", ["self_pickup", "delivery"]
+  create_enum "order_status", ["pending", "confirmed", "in_progress", "out_for_delivery", "delivered", "cancelled"]
 
   create_table "order_items", force: :cascade do |t|
     t.bigint "order_id", null: false
@@ -34,6 +35,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_26_113248) do
     t.datetime "delivery_time", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.enum "order_status", default: "pending", null: false, enum_type: "order_status"
   end
 
   create_table "sandwiches", force: :cascade do |t|
