@@ -1,5 +1,12 @@
 class SandwichesController < ApplicationController
   before_action :authenticate
+
+  def index
+    sandwiches = Sandwich.all
+
+    render :index, locals: {sandwiches: sandwiches}
+  end
+
   def new
     render :new, locals: {sandwich: Sandwich.new}
   end
