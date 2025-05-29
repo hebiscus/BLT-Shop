@@ -1,5 +1,19 @@
 class SandwichesController < ApplicationController
   before_action :authenticate
+
+  def index
+    sandwiches = Sandwich.all
+
+    render :index, locals: {sandwiches: sandwiches}
+  end
+
+  def show
+    sandwich = Sandwich.find(params[:id])
+    shops = Shop.all
+
+    render :show, locals: {sandwich:, shops:}
+  end
+
   def new
     render :new, locals: {sandwich: Sandwich.new}
   end
