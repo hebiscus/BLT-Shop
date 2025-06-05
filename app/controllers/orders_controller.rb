@@ -6,20 +6,15 @@ class OrdersController < ApplicationController
       ActiveRecord::Base.transaction do
         order = Order.create!(
           delivery_method: order_schema[:delivery_method],
-          delivery_time: order_schema[:delivery_time]
+          delivery_time: order_schema[:delivery_time],
+          order_status: order_schema[:order_status]
         )
-
-        order_schema[:order_items].each do |item|
-          order.order_items.create!(
-            sandwich_id: item[:sandwich_id],
-            quantity: item[:quantity]
-          )
-        end
-
-        render json: {id: order.id}, status: :created
       end
+      flash[:notice] = "Order placed successfully!"
+      redirect_to "/sandwiches"
     else
-      render json: {errors: order_schema.errors.to_h}, status: :unprocessable_entity
+      flash[:errors] = order_schema.errors
+      redirect_to "/cart", allow_other_host: true
     end
   end
 end
