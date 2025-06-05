@@ -28,6 +28,31 @@ class SandwichesController < ApplicationController
     end
   end
 
+  def add_to_cart
+    sandwich = Sandwich.find(params[:id])
+    quantity = params[:quantity].to_i
+
+    raw_params = {
+      sandwich_id: sandwich.id,
+      quantity: quantity,
+      charged_price: sandwich.price * quantity
+    }
+
+    result = CartItemSchema.call(raw_params)
+
+    if result.success?
+      current_cart.cart_items.create!(
+        sandwich_id: result[:sandwich_id],
+        quantity: result[:quantity],
+        charged_price: result[:charged_price]
+      )
+
+      redirect_to sandwich_path(sandwich), notice: "Added to cart"
+    else
+      redirect_to sandwich_path(sandwich), alert: "Could not save item to cart"
+    end
+  end
+
   private
 
   def sandwich_params
