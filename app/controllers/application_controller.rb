@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   def current_cart
     @current_cart ||= begin
-      cart = Cart.find_by(id: session[:cart_id])
+      cart = Cart.includes(:cart_items).find_by(id: session[:cart_id])
       unless cart
         cart = Cart.create!
         session[:cart_id] = cart.id
