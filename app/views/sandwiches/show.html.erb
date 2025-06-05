@@ -1,51 +1,30 @@
 <div class="flex justify-center">
   <div class="max-w-2xl bg-white rounded-lg shadow p-6">
     <img src="https://images.unsplash.com/photo-1627308595181-555c07449ff3?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="<%= sandwich.name %>" class="rounded mb-4 object-cover w-full h-64">
-  
+
     <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= sandwich.name %></h1>
     <p class="text-xl text-gray-700 mb-4">$<%= sprintf('%.2f', sandwich.price) %></p>
   </div>
   
-  <form action="/orders" method="post" class="max-w-xl bg-white rounded-lg shadow p-6 space-y-4">
-    <input type="hidden" name="sandwich_id" value="<%= sandwich.id %>">
-  
+  <%= form_with url: orders_path, method: :post, scope: :order, local: true, html: { class: "max-w-xl bg-white rounded-lg shadow p-6 space-y-4" } do |form| %>
+    <%= form.hidden_field :sandwich_id, value: sandwich.id %>
+    <%= form.hidden_field :order_status, value: "pending" %>
+
     <div class="mb-6">
-      <label for="shop_id" class="block text-sm font-medium text-gray-700 mb-1">Choose a shop</label>
-      <select
-        name="shop_id"
-        id="shop_id"
-        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-      >
-        <% shops.each do |shop| %>
-          <option value="<%= shop.id %>"><%= shop.name %></option>
-        <% end %>
-      </select>
+      <%= form.label :shop_id, "Choose a shop", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.select :shop_id, shops.map { |shop| [shop.name, shop.id] }, {}, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
     </div>
 
     <div>
-      <label for="delivery_method" class="block text-sm font-medium text-gray-700 mb-1">Delivery method</label>
-      <select
-        name="delivery_method"
-        id="delivery_method"
-        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-      >
-        <option value="self_pickup" selected>Self pickup</option>
-      </select>
+      <%= form.label :delivery_method, "Delivery method", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.select :delivery_method, options_for_select([["Self pickup", "self_pickup"]], selected: "self_pickup"), {}, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
     </div>
 
     <div>
-      <label for="delivery_time" class="block text-sm font-medium text-gray-700 mb-1">Preferred pickup time</label>
-      <input
-        type="datetime-local"
-        name="delivery_time"
-        id="delivery_time"
-        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        required
-      >
+      <%= form.label :delivery_time, "Preferred pickup time", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.datetime_field :delivery_time, required: true, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
     </div>
-  
-    <button type="submit" class="cursor-pointer w-full bg-indigo-600 text-white font-semibold px-4 py-2 rounded hover:bg-indigo-700 transition">
-      Order This Sandwich
-    </button>
-  </form>
+
+    <%= form.submit "Order This Sandwich", class: "cursor-pointer w-full bg-indigo-600 text-white font-semibold px-4 py-2 rounded hover:bg-indigo-700 transition" %>
+  <% end %>
 </div>
