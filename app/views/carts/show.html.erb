@@ -1,0 +1,45 @@
+<h1 class="text-xl font-bold mb-4">Your Cart</h1>
+
+<% if cart_items.any? %>
+  <ul class="divide-y">
+    <% cart_items.each do |item| %>
+      <li class="py-2 flex justify-between items-center">
+        <div>
+          <p class="font-medium"><%= item.sandwich.name %></p>
+          <p class="text-sm text-gray-600">Quantity: <%= item.quantity %></p>
+        </div>
+        <div>
+          <%= number_to_currency(item.charged_price * item.quantity / 100.0) %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+
+  <div class="mt-4 text-right text-lg font-semibold">
+    Total: <%= number_to_currency(total_price_cents / 100.0) %>
+  </div>
+
+  <%= form_with url: orders_path, method: :post, scope: :order, local: true do |form| %>
+    <%= form.hidden_field :order_status, value: "pending" %>
+
+    <div class="m-1">
+      <%= form.label :shop_id, "Choose a shop", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.select :shop_id, shops.map { |shop| [shop.name, shop.id] }, {}, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
+    </div>
+
+    <div class="m-1">
+      <%= form.label :delivery_method, "Delivery method", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.select :delivery_method, options_for_select([["Self pickup", "self_pickup"]], selected: "self_pickup"), {}, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
+    </div>
+
+    <div class="m-1">
+      <%= form.label :delivery_time, "Preferred pickup time", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.datetime_field :delivery_time, required: true, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
+    </div>
+
+    <%= form.submit "Place an Order", class: "mt-6 w-full bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700 transition" %>
+  <% end %>
+<% else %>
+  <p>Your cart is empty.</p>
+<% end %>
+
