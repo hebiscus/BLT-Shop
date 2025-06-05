@@ -30,7 +30,7 @@
   </div>
 
   <%= form_with url: orders_path, method: :post, scope: :order, local: true do |form| %>
-    <%# = form.hidden_field :order_status, value: "pending" %>
+    <%= form.hidden_field :order_status, value: "pending"%>
 
     <div class="m-1">
       <%= form.label :shop_id, "Choose a shop", class: "block text-sm font-medium text-gray-700 mb-1" %>
