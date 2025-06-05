@@ -1,30 +1,20 @@
-<div class="flex justify-center">
-  <div class="max-w-2xl bg-white rounded-lg shadow p-6">
+<div class="flex justify-center gap-2">
+  <div class="max-w-2xl bg-white rounded-lg shadow">
     <img src="https://images.unsplash.com/photo-1627308595181-555c07449ff3?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="<%= sandwich.name %>" class="rounded mb-4 object-cover w-full h-64">
 
     <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= sandwich.name %></h1>
     <p class="text-xl text-gray-700 mb-4">$<%= sprintf('%.2f', sandwich.price) %></p>
   </div>
   
-  <%= form_with url: orders_path, method: :post, scope: :order, local: true, html: { class: "max-w-xl bg-white rounded-lg shadow p-6 space-y-4" } do |form| %>
-    <%= form.hidden_field :sandwich_id, value: sandwich.id %>
-    <%= form.hidden_field :order_status, value: "pending" %>
-
-    <div class="mb-6">
-      <%= form.label :shop_id, "Choose a shop", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.select :shop_id, shops.map { |shop| [shop.name, shop.id] }, {}, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
-    </div>
-
-    <div>
-      <%= form.label :delivery_method, "Delivery method", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.select :delivery_method, options_for_select([["Self pickup", "self_pickup"]], selected: "self_pickup"), {}, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
-    </div>
-
-    <div>
-      <%= form.label :delivery_time, "Preferred pickup time", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.datetime_field :delivery_time, required: true, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
-    </div>
-
-    <%= form.submit "Order This Sandwich", class: "cursor-pointer w-full bg-indigo-600 text-white font-semibold px-4 py-2 rounded hover:bg-indigo-700 transition" %>
-  <% end %>
+  <div>
+    <%= form_with url: add_to_cart_sandwich_path(sandwich), method: :post, local: true do %>
+      <div class="mb-4">
+        <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+        <%= number_field_tag :quantity, 1, min: 1, class: "border rounded px-2 py-1 w-20" %>
+      </div>
+      <%= submit_tag "Add to Cart", class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition" %>
+    <% end %>
+    <%= link_to "Go to Cart", cart_path,
+        class: "inline-block mt-4 text-indigo-600 font-semibold hover:underline" %>
+  </div>
 </div>
