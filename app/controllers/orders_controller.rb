@@ -9,6 +9,22 @@ class OrdersController < ApplicationController
           delivery_time: order_schema[:delivery_time],
           order_status: order_schema[:order_status]
         )
+
+        current_cart.cart_items.each do |cart_item|
+          order.order_items.create!(
+            sandwich_id: cart_item.sandwich_id,
+            quantity: cart_item.quantity,
+            charged_price: cart_item.charged_price
+          )
+        end
+
+        file_path = ::OrderFaxFileGenerator.new(order).call
+
+        ::FaxSender.new(
+          file_path,
+          receiver_number: "1234567890",
+          token: ENV["FAX_API_TOKEN"]
+        ).call
       end
       flash[:notice] = "Order placed successfully!"
       redirect_to "/sandwiches"
