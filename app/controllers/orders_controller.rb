@@ -26,6 +26,7 @@ class OrdersController < ApplicationController
           token: ENV["FAX_API_TOKEN"]
         ).call
       end
+      current_cart.cart_items.destroy_all
       flash[:notice] = "Order placed successfully!"
       redirect_to "/sandwiches"
     else
