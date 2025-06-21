@@ -5,6 +5,14 @@
       <%= flash[:notice] %>
     </div>
   <% end %>
+
+  <%= form_with url: choose_shop_shops_path(), method: :post, local: true do |form| %>
+    <%= form.label :shop_id, "Choose a shop", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <div class="flex">
+      <%= form.select :shop_id, shops.map { |shop| [shop.name, shop.id] }, {}, class: "border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
+      <%= form.submit "Submit", class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition" %>
+    </div>
+  <% end %>
   
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
     

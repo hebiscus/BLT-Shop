@@ -3,8 +3,9 @@ class SandwichesController < ApplicationController
 
   def index
     sandwiches = Sandwich.all
+    shops = Shop.all
 
-    render :index, locals: {sandwiches: sandwiches}
+    render :index, locals: {sandwiches: sandwiches, shops:}
   end
 
   def show

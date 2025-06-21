@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resource :shops, only: [] do
+    post "choose_shop", on: :member
+  end
   resource :cart, only: [:show]
   resources :orders, only: [:create]
   resources :sandwiches, only: [:show, :index, :new, :create] do
