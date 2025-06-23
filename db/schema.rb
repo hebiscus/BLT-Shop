@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_06_094735) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_23_211630) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -62,6 +62,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_094735) do
     t.index ["name"], name: "index_sandwiches_on_name"
   end
 
+  create_table "shop_sandwiches", force: :cascade do |t|
+    t.bigint "shop_id", null: false
+    t.bigint "sandwich_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sandwich_id"], name: "index_shop_sandwiches_on_sandwich_id"
+    t.index ["shop_id", "sandwich_id"], name: "index_shop_sandwiches_on_shop_id_and_sandwich_id", unique: true
+    t.index ["shop_id"], name: "index_shop_sandwiches_on_shop_id"
+  end
+
   create_table "shops", force: :cascade do |t|
     t.string "name"
     t.jsonb "address", default: {}, null: false
@@ -74,4 +84,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_094735) do
   add_foreign_key "cart_items", "sandwiches"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "sandwiches"
+  add_foreign_key "shop_sandwiches", "sandwiches"
+  add_foreign_key "shop_sandwiches", "shops"
 end
