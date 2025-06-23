@@ -6,20 +6,14 @@
     </div>
   <% end %>
 
-  <%= form_with url: choose_shop_shops_path(), method: :post, local: true do |form| %>
+  <%= form_with url: choose_shop_shops_path(), method: :post do |form| %>
     <%= form.label :shop_id, "Choose a shop", class: "block text-sm font-medium text-gray-700 mb-1" %>
     <div class="flex">
       <%= form.select :shop_id, shops.map { |shop| [shop.name, shop.id] }, {}, class: "border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
       <%= form.submit "Submit", class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition" %>
+      <%= link_to "Reset", sandwiches_path, class: "bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition" %>
     </div>
   <% end %>
   
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-2.5">
-    <% sandwiches.each do |sandwich| %>
-      <a href="/sandwiches/<%= sandwich.id %>" class="block bg-white rounded-lg shadow p-4 hover:shadow-lg hover:bg-gray-50 transition">
-        <div class="text-xl font-semibold text-gray-800"><%= sandwich.name %></div>
-        <div class="text-gray-600 mt-1">$<%= sprintf('%.2f', sandwich.price) %></div>
-      </a>
-    <% end %>
-  </div>
+  <%= render partial: "sandwiches/list", locals: { sandwiches: sandwiches, no_sandwiches_msg: "" } %>
 </div>
