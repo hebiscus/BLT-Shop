@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
+  resource :shops, only: [] do
+    post "choose_shop", on: :member
+  end
+  resource :cart, only: [:show]
   resources :orders, only: [:create]
-  resources :sandwiches, only: [:new, :create]
+  resources :sandwiches, only: [:show, :index, :new, :create] do
+    post "add_to_cart", on: :member
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
