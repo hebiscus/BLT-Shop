@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: blt_shop
+      POSTGRES_PASSWORD: your_password_here
+      POSTGRES_DB: blt_shop_production
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: bin/rails server -b 0.0.0.0 -p 8080
+    environment:
+      RAILS_ENV: production
+      blt_shop_DATABASE_PASSWORD: your_password_here
+      AWS_REGION: us-east-1
+      PORT: 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    volumes:
+      - .:/rails
+
+volumes:
+  pgdata:
