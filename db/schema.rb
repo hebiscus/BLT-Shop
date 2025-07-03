@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_23_211630) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_03_195315) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,6 +52,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_23_211630) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.enum "order_status", default: "pending", null: false, enum_type: "order_status"
+    t.bigint "shop_id", null: false
+    t.index ["shop_id"], name: "index_orders_on_shop_id"
   end
 
   create_table "sandwiches", force: :cascade do |t|
@@ -84,6 +86,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_23_211630) do
   add_foreign_key "cart_items", "sandwiches"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "sandwiches"
+  add_foreign_key "orders", "shops"
   add_foreign_key "shop_sandwiches", "sandwiches"
   add_foreign_key "shop_sandwiches", "shops"
 end
