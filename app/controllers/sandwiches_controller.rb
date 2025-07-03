@@ -1,5 +1,20 @@
 class SandwichesController < ApplicationController
   before_action :authenticate
+
+  def index
+    sandwiches = Sandwich.all
+    shops = Shop.all
+
+    render :index, locals: {sandwiches: sandwiches, shops:}
+  end
+
+  def show
+    sandwich = Sandwich.find(params[:id])
+    shops = Shop.all
+
+    render :show, locals: {sandwich:, shops:}
+  end
+
   def new
     render :new, locals: {sandwich: Sandwich.new}
   end
@@ -11,6 +26,31 @@ class SandwichesController < ApplicationController
       redirect_to "/"
     else
       render :new, locals: {sandwich: sandwich}, status: :unprocessable_entity
+    end
+  end
+
+  def add_to_cart
+    sandwich = Sandwich.find(params[:id])
+    quantity = params[:quantity].to_i
+
+    raw_params = {
+      sandwich_id: sandwich.id,
+      quantity: quantity,
+      charged_price: sandwich.price * quantity
+    }
+
+    result = CartItemSchema.call(raw_params)
+
+    if result.success?
+      current_cart.cart_items.create!(
+        sandwich_id: result[:sandwich_id],
+        quantity: result[:quantity],
+        charged_price: result[:charged_price]
+      )
+
+      redirect_to sandwich_path(sandwich), notice: "Added to cart"
+    else
+      redirect_to sandwich_path(sandwich), alert: "Could not save item to cart"
     end
   end
 
