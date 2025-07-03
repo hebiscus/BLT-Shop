@@ -1,13 +1,16 @@
 class OrdersController < ApplicationController
   def create
-    order_schema = OrderSchema.call(params.require(:order).permit!.to_h)
+    # temporary selected shop id
+    shop_id = session[:selected_shop_id]
+    order_schema = OrderSchema.call(params.require(:order).permit!.to_h.merge(shop_id: shop_id))
 
     if order_schema.success?
       ActiveRecord::Base.transaction do
         order = Order.create!(
           delivery_method: order_schema[:delivery_method],
           delivery_time: order_schema[:delivery_time],
-          order_status: order_schema[:order_status]
+          order_status: order_schema[:order_status],
+          shop_id: shop_id
         )
 
         current_cart.cart_items.each do |cart_item|
