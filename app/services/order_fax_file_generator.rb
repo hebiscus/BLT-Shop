@@ -6,6 +6,8 @@ class OrderFaxFileGenerator
   def call
     file_content = <<~TXT
       Order ID: #{@order.id}
+      Shop ID: #{@order.shop_id}
+      Shop Name: #{@order.shop.name}
       Delivery Method: #{@order.delivery_method}
       Delivery Time: #{@order.delivery_time}
       Status: #{@order.order_status}
