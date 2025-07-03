@@ -6,7 +6,7 @@
   <% else %>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-2.5">
       <% sandwiches.each do |sandwich| %>
-        <a href="/sandwiches/<%= sandwich.id %>" class="block bg-white rounded-lg shadow p-4 hover:shadow-lg hover:bg-gray-50 transition">
+        <a href="/sandwiches/<%= sandwich.id %>" data-turbo="false" class="block bg-white rounded-lg shadow p-4 hover:shadow-lg hover:bg-gray-50 transition">
           <div class="text-xl font-semibold text-gray-800"><%= sandwich.name %></div>
           <div class="text-gray-600 mt-1">$<%= sprintf('%.2f', sandwich.price) %></div>
         </a>
