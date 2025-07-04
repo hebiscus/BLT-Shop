@@ -19,6 +19,7 @@
           <p class="text-sm text-gray-600">Quantity: <%= item.quantity %></p>
         </div>
         <div>
+          <!-- to be corrected -->
           <%= number_to_currency(item.charged_price * item.quantity / 100.0) %>
         </div>
       </li>
@@ -26,7 +27,7 @@
   </ul>
 
   <div class="mt-4 text-right text-lg font-semibold">
-    Total: <%= number_to_currency(total_price_cents / 100.0) %>
+    Total: <%= total_price_cents %>
   </div>
 
   <%= form_with url: orders_path, method: :post, scope: :order, local: true do |form| %>
