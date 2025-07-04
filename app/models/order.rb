@@ -3,6 +3,6 @@ class Order < ApplicationRecord
   belongs_to :shop
 
   def total_amount
-    order_items.sum { |item| item.charged_price * item.quantity }
+    order_items.sum(&:charged_price)
   end
 end
