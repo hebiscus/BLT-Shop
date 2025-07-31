@@ -29,10 +29,11 @@ class OrdersController < ApplicationController
             receiver_number: "1234567890",
             token: ENV["FAX_API_TOKEN"]
           ).call
+
+          Rails.logger.info("Order successfully placed: #{order.id}")
         end
         current_cart.cart_items.destroy_all
         flash[:notice] = "Order placed successfully!"
-        Rails.logger.info("Order successfully placed: #{order.id}")
         redirect_to "/sandwiches"
       rescue => e
         Rails.logger.error("[Order Error] #{e.class}: #{e.message}")
