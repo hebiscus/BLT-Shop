@@ -1,5 +1,7 @@
-class Address
-  include StoreModel::Model
+module StoreModels
+  class Address
+    include StoreModel::Model
 
-  attribute :street_name, :string
+    attribute :street_name, :string
+  end
 end
