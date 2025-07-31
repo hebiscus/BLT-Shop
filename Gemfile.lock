@@ -350,6 +350,12 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sentry-rails (5.26.0)
+      railties (>= 5.0)
+      sentry-ruby (~> 5.26.0)
+    sentry-ruby (5.26.0)
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
     sinatra (4.1.1)
       logger (>= 1.6.0)
       mustermann (~> 3.0)
@@ -380,6 +386,7 @@ GEM
       net-sftp (>= 2.1.2)
       net-ssh (>= 2.8.0)
       ostruct
+    stackprof (0.2.27)
     standard (1.47.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -466,10 +473,13 @@ DEPENDENCIES
   rspec-rails
   rubocop-rails-omakase
   selenium-webdriver
+  sentry-rails
+  sentry-ruby
   sinatra
   solid_cable
   solid_cache
   solid_queue
+  stackprof
   standard (>= 1.35.1)
   stimulus-rails
   store_model
