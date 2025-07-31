@@ -11,7 +11,7 @@ class FaxSender
   end
 
   def call
-    raise ArgumentError, "File not found: #{@file_path}" unless File.exist?(@file_path)
+    return no_file_found unless File.exist?(@file_path)
 
     file = File.open(@file_path, "rb")
 
@@ -47,5 +47,12 @@ class FaxSender
     end
   ensure
     file.close if file && !file.closed?
+  end
+
+  private
+
+  def no_file_found
+    Rails.logger.error("File not found: #{@file_path}")
+    raise ArgumentError, "File not found: #{@file_path}"
   end
 end

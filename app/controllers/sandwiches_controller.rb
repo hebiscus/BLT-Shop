@@ -25,6 +25,7 @@ class SandwichesController < ApplicationController
     if sandwich.save
       redirect_to "/"
     else
+      Rails.logger.error("Creating a sandwich failed: #{sandwich.errors.full_messages}")
       render :new, locals: {sandwich: sandwich}, status: :unprocessable_entity
     end
   end
@@ -50,6 +51,7 @@ class SandwichesController < ApplicationController
 
       redirect_to sandwich_path(sandwich), notice: "Added to cart"
     else
+      Rails.logger.error("Adding an item to cart failed: #{result.errors.to_h}")
       redirect_to sandwich_path(sandwich), alert: "Could not save item to cart"
     end
   end

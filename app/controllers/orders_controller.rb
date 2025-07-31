@@ -32,6 +32,7 @@ class OrdersController < ApplicationController
         end
         current_cart.cart_items.destroy_all
         flash[:notice] = "Order placed successfully!"
+        Rails.logger.info("Order successfully placed: #{order.id}")
         redirect_to "/sandwiches"
       rescue => e
         Rails.logger.error("[Order Error] #{e.class}: #{e.message}")
