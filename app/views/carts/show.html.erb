@@ -29,7 +29,7 @@
     Total: <%= number_to_currency(total_price_cents / 100.0) %>
   </div>
 
-  <%= form_with url: orders_path, method: :post, scope: :order, local: true do |form| %>
+  <%= form_with url: orders_path, method: :post, scope: :order, local: true, data: { turbo: false } do |form| %>
     <%= form.hidden_field :order_status, value: "pending"%>
 
     <div class="m-1">
