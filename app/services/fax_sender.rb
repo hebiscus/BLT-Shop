@@ -39,8 +39,8 @@ class FaxSender
       Rails.logger.error("[FaxSender] Forbidden: #{response.body}")
       raise "Forbidden: #{response.body}"
     when 500..599
-      Rails.logger.error("[FaxSender] Server error (#{response.code}): #{response.body}")
-      raise "Server error: #{response.body}"
+      Rails.logger.error("[FaxSender] Server error (#{response.code}) from fax API: likely down or restarting.")
+      raise "Temporarily unavailable. Please try again."
     else
       Rails.logger.error("[FaxSender] Unexpected response (#{response.code}): #{response.body}")
       raise "Unexpected response: #{response.body}"
