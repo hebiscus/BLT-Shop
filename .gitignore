@@ -36,3 +36,10 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+cypress/results/
+node_modules/
+
