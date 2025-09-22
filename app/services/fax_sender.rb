@@ -1,13 +1,9 @@
-require "httparty"
-
 class FaxSender
-  include HTTParty
-  base_uri ENV.fetch("FAX_API_URL", "http://localhost:4567")
-
-  def initialize(file_path, receiver_number:, token:)
+  def initialize(file_path, receiver_number:, token:, http_client: default_http_client)
     @file_path = file_path
     @receiver_number = receiver_number
     @token = token
+    @http_client = http_client
   end
 
   def call
@@ -26,7 +22,7 @@ class FaxSender
       timeout: 10
     }
 
-    response = self.class.post("/faxes", options)
+    response = @http_client.post("/faxes", options)
 
     case response.code
     when 201
@@ -50,6 +46,13 @@ class FaxSender
   end
 
   private
+
+  def default_http_client
+    Class.new do
+      include HTTParty
+      base_uri ENV.fetch("FAX_API_URL", "http://localhost:4567")
+    end
+  end
 
   def no_file_found
     Rails.logger.error("File not found: #{@file_path}")
