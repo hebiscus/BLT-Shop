@@ -1,10 +1,10 @@
 require "rails_helper"
 
 RSpec.describe OrdersController, type: :controller do
-  let!(:shop) { Shop.create!(name: "Test Shop", address: {street: "123 Main St"}) }
-  let!(:cart) { Cart.create! }
-  let!(:sandwich) { Sandwich.create!(name: "BLT", price: 999) }
-  let!(:cart_item) { CartItem.create!(cart: cart, sandwich: sandwich, quantity: 2, charged_price: 999) }
+  let!(:shop) { create(:shop, name: "Test Shop", address: {street: "123 Main St"}) }
+  let!(:cart) { create(:cart) }
+  let!(:sandwich) { create(:sandwich, name: "BLT", price: 999) }
+  let!(:cart_item) { create(:cart_item, cart: cart, sandwich: sandwich, quantity: 2, charged_price: 999) }
 
   before do
     allow(controller).to receive(:current_cart).and_return(cart)
@@ -31,8 +31,6 @@ RSpec.describe OrdersController, type: :controller do
           post :create, params: order_params
         }.to change(Order, :count).by(1)
           .and change(OrderItem, :count).by(1)
-
-        p response
 
         expect(response).to redirect_to("/sandwiches")
         expect(flash[:notice]).to eq("Order placed successfully!")
