@@ -63,6 +63,8 @@ group :development, :test do
   gem "standard", ">= 1.35.1"
 
   gem "dotenv-rails"
+
+  gem "factory_bot_rails"
 end
 
 group :development do
@@ -75,4 +77,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "rspec-rails"
+  gem "simplecov"
 end
