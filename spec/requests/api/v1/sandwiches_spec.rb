@@ -11,9 +11,13 @@ RSpec.describe "API::V1::Sandwiches", type: :request do
   end
 
   describe "GET /api/v1/sandwiches/:id" do
-    it "returns a specific sandwich" do
+    it "returns a specific sandwich filterd by shop" do
+      shop = create(:shop, name: "coco loco")
       sandwich = create(:sandwich, name: "BLT")
-      get "/api/v1/sandwiches/#{sandwich.id}"
+      create(:shop_sandwich, shop: shop, sandwich: sandwich)
+
+      get "/api/v1/sandwiches/#{sandwich.id}", params: {shop_name: shop.name}
+
       expect(response).to have_http_status(:ok)
       body = JSON.parse(response.body)
       expect(body["name"]).to eq("BLT")

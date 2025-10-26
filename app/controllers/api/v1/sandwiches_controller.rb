@@ -7,7 +7,8 @@ module Api
       end
 
       def show
-        sandwich = Sandwich.find(params[:id])
+        shop = Shop.includes(:sandwiches).find_by(name: params[:shop_name])
+        sandwich = shop.sandwiches.find(params[:id])
         render json: sandwich
       end
     end
