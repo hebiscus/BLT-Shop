@@ -2,21 +2,15 @@ module Api
   module V1
     class OrdersController < ApplicationController
       def create
-        order = Order.new(order_params)
+        order = repository.build_order!(
+          order_params: order_params.to_h,
+          order_items: params[:order_items] || [],
+          shop_id:
+        )
 
-        if order.save
-          params[:order_items]&.each do |item|
-            order.order_items.create!(
-              sandwich_id: item[:sandwich_id],
-              quantity: item[:quantity],
-              charged_price: item[:charged_price] || Sandwich.find(item[:sandwich_id]).price
-            )
-          end
-
-          render json: order, status: :created
-        else
-          render json: {errors: order.errors.full_messages}, status: :unprocessable_entity
-        end
+        render json: order, status: :created
+      rescue ActiveRecord::RecordInvalid => e
+        render json: {errors: e.record.errors.full_messages}, status: :unprocessable_entity
       end
 
       def show
@@ -28,6 +22,10 @@ module Api
 
       def order_params
         params.require(:order).permit(:delivery_method, :delivery_time, :shop_id)
+      end
+
+      def repository
+        ::Repositories::OrderRepository.new
       end
     end
   end
