@@ -1,3 +1,5 @@
+require_relative "../repositories/order_repository"
+
 class OrdersController < ApplicationController
   def create
     # temporary selected shop id
@@ -6,8 +8,8 @@ class OrdersController < ApplicationController
 
     if order_schema.success?
       begin
-        order_items = current_cart.order_items
-        order = repository.build_order(order_params: order_schema.to_h, order_items:, shop_id:)
+        order_items = current_cart.cart_items
+        order = repository.build_order!(order_params: order_schema.to_h, order_items:)
 
         current_cart.cart_items.destroy_all
         flash[:notice] = "Order placed successfully!"
@@ -26,6 +28,6 @@ class OrdersController < ApplicationController
   private
 
   def repository
-    Repositories::OrderRepository.new
+    ::Repositories::OrderRepository.new
   end
 end
