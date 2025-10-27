@@ -1,11 +1,8 @@
-require_relative "models/order"
-
 module Repositories
-  class Order
-    def build_order!(order_params:, order_items:, shop_id:)
+  class OrderRepository
+    def build_order!(order_params:, order_items:)
       ActiveRecord::Base.transaction do
-        order = Order.create!(order_attrs, shop_id)
-
+        order = Order.create!(**order_params)
         order_items.each do |item|
           order.order_items.create!(
             sandwich_id: item[:sandwich_id],
