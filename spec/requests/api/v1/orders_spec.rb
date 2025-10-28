@@ -2,6 +2,10 @@ require "rails_helper"
 
 RSpec.describe "API::V1::Orders", type: :request do
   describe "POST /api/v1/orders" do
+    before do
+      allow(OrderFaxFileGenerator).to receive(:new).and_return(double(call: "/tmp/fax.txt"))
+      allow(FaxSender).to receive(:new).and_return(double(call: true))
+    end
     it "creates an order with items" do
       shop = create(:shop)
       sandwich1 = create(:sandwich, price: 1000)
