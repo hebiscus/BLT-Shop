@@ -1,11 +1,12 @@
+require_relative "../../../repositories/order_repository"
+
 module Api
   module V1
     class OrdersController < ApplicationController
       def create
         order = repository.build_order!(
           order_params: order_params.to_h,
-          order_items: params[:order_items] || [],
-          shop_id:
+          order_items: params[:order_items] || []
         )
 
         render json: order, status: :created
