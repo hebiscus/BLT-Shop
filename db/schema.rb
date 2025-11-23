@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_03_195315) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_23_104833) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -33,6 +33,30 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_03_195315) do
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "discount_scopes", force: :cascade do |t|
+    t.bigint "discount_id", null: false
+    t.bigint "shop_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["discount_id", "shop_id"], name: "index_discount_scopes_on_discount_id_and_shop_id", unique: true
+    t.index ["discount_id"], name: "index_discount_scopes_on_discount_id"
+    t.index ["shop_id"], name: "index_discount_scopes_on_shop_id"
+  end
+
+  create_table "discounts", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "percentage", null: false
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.boolean "active", default: true
+    t.jsonb "rules", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_discounts_on_active"
+    t.index ["ends_at"], name: "index_discounts_on_ends_at"
+    t.index ["starts_at"], name: "index_discounts_on_starts_at"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -84,6 +108,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_03_195315) do
 
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "sandwiches"
+  add_foreign_key "discount_scopes", "discounts"
+  add_foreign_key "discount_scopes", "shops"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "sandwiches"
   add_foreign_key "orders", "shops"
