@@ -12,11 +12,22 @@ module Repositories
           )
         end
 
+        apply_pricing_and_discounts(order)
+
         file_path = ::OrderFaxFileGenerator.new(order).call
         ::FaxSender.new(file_path, receiver_number: "1234567890", token: ENV["FAX_API_TOKEN"]).call
 
         order
       end
+    end
+
+    # temp; move into a separate PricingRepo
+    def apply_pricing_and_discounts(order)
+      pricing = OrderPriceCalculator.new(order: order).call
+
+      # total after discount apply
+
+      # register discount use
     end
   end
 end
